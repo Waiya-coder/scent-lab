@@ -1,0 +1,163 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum FragranceFamily {
+  citrus
+  floral
+  woody
+  amber
+  green
+  spice
+}
+
+enum Intensity {
+  soft
+  balanced
+  statement
+}
+
+enum Lifestyle {
+  creative
+  outdoorsy
+  urban
+  wellness
+  traveler
+}
+
+enum Personality {
+  bold
+  romantic
+  grounded
+  curious
+  luxurious
+}
+
+enum Climate {
+  hot
+  temperate
+  cold
+  humid
+  dry
+}
+
+enum Mood {
+  energizing
+  sensual
+  grounded
+  playful
+  serene
+}
+
+model Fragrance {
+  id                  String                   @id @default(cuid())
+  slug                String                   @unique
+  brand               String
+  name                String
+  tagline             String
+  family              FragranceFamily
+  imageUrl            String
+  productUrl          String
+  longevity           Int
+  sillage             Intensity
+  refillable          Boolean
+  sustainabilityScore Int
+  citrus              Int
+  floral              Int
+  woods               Int
+  musk                Int
+  spice               Int
+  green               Int
+  createdAt           DateTime                 @default(now())
+  updatedAt           DateTime                 @updatedAt
+  notes               FragranceNote[]
+  targets             FragranceTarget[]
+  inventory           StoreInventory[]
+  recommendations     SurveyRecommendation[]
+}
+
+model FragranceNote {
+  id          String    @id @default(cuid())
+  fragranceId String
+  noteName    String
+  fragrance   Fragrance @relation(fields: [fragranceId], references: [id], onDelete: Cascade)
+
+  @@index([fragranceId])
+}
+
+model FragranceTarget {
+  id          String    @id @default(cuid())
+  fragranceId String
+  dimension   String
+  value       String
+  weight      Int       @default(1)
+  fragrance   Fragrance @relation(fields: [fragranceId], references: [id], onDelete: Cascade)
+
+  @@index([fragranceId])
+  @@index([dimension, value])
+}
+
+model Store {
+  id          String           @id @default(cuid())
+  slug        String           @unique
+  name        String
+  city        String
+  region      String
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  inventory   StoreInventory[]
+  sessions    SurveySession[]
+}
+
+model StoreInventory {
+  id              String    @id @default(cuid())
+  storeId         String
+  fragranceId     String
+  isAvailable     Boolean   @default(true)
+  testerAvailable Boolean   @default(true)
+  stockLevel      Int       @default(0)
+  store           Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  fragrance       Fragrance @relation(fields: [fragranceId], references: [id], onDelete: Cascade)
+
+  @@unique([storeId, fragranceId])
+  @@index([storeId])
+  @@index([fragranceId])
+}
+
+model SurveySession {
+  id               String                 @id @default(cuid())
+  storeId          String?
+  customerName     String?
+  lifestyle        Lifestyle
+  personality      Personality
+  climate          Climate
+  mood             Mood
+  intensity        Intensity
+  refillPreference Boolean
+  createdAt        DateTime               @default(now())
+  store            Store?                 @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  recommendations  SurveyRecommendation[]
+
+  @@index([storeId])
+  @@index([createdAt])
+}
+
+model SurveyRecommendation {
+  id              String        @id @default(cuid())
+  surveySessionId String
+  fragranceId     String
+  score           Int
+  rank            Int
+  createdAt       DateTime      @default(now())
+  surveySession   SurveySession @relation(fields: [surveySessionId], references: [id], onDelete: Cascade)
+  fragrance       Fragrance     @relation(fields: [fragranceId], references: [id], onDelete: Cascade)
+
+  @@index([surveySessionId])
+  @@index([fragranceId])
+  @@unique([surveySessionId, rank])
+}

@@ -1,0 +1,25 @@
+{
+  "name": "scent-lab",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "overrides": {
+    "react": "19.0.0"
+  },
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace @scent-lab/server\" \"npm run dev --workspace @scent-lab/client\"",
+    "dev:client": "npm run dev --workspace @scent-lab/client",
+    "dev:server": "npm run dev --workspace @scent-lab/server",
+    "ios": "concurrently \"npm run dev --workspace @scent-lab/server\" \"npm run ios --workspace @scent-lab/client\"",
+    "db:up": "docker compose up -d postgres",
+    "db:down": "docker compose down",
+    "build": "npm run build --workspace @scent-lab/shared && npm run build --workspace @scent-lab/server && npm run build --workspace @scent-lab/client"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "typescript": "5.8.3"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "Scent Lab",
+    "slug": "scent-lab",
+    "scheme": "scentlab",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.winniebrendawaiya.scentlab"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "c3cd2760-db49-4557-b1de-342074128f01"
+      }
+    }
+  }
+}
