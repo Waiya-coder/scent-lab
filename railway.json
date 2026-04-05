@@ -5,7 +5,7 @@
     "buildCommand": "npm install && npm run db:generate --workspace @scent-lab/server && npm run build --workspace @scent-lab/shared && npm run build --workspace @scent-lab/server"
   },
   "deploy": {
-    "startCommand": "npm run db:deploy --workspace @scent-lab/server && npm run start --workspace @scent-lab/server",
+    "startCommand": "npm run db:prepare --workspace @scent-lab/server && npm run start --workspace @scent-lab/server",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
   }

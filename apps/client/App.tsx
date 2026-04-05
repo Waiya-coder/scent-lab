@@ -23,6 +23,7 @@ import {
   type QuizSubmission
 } from "@scent-lab/shared";
 import { fetchFragrances, fetchRecommendation } from "./src/api";
+import { getFragranceImageSource } from "./src/fragranceImages";
 
 type Stage = "question" | "splash" | "details" | "survey" | "results";
 
@@ -204,7 +205,7 @@ export default function App() {
 
           {stage === "splash" ? (
             <View style={styles.splashScreen}>
-              {heroBottle ? <Image source={{ uri: heroBottle.imageUrl }} style={styles.splashBottle} resizeMode="contain" /> : null}
+              {heroBottle ? <Image source={getFragranceImageSource(heroBottle.id, heroBottle.imageUrl)} style={styles.splashBottle} resizeMode="contain" /> : null}
 
               <View style={styles.splashOverlay}>
                 <Text style={styles.splashLine}>Well, if you musk?</Text>
@@ -327,7 +328,7 @@ export default function App() {
               <View style={styles.resultsStack}>
                 {recommendation?.recommendations.map(({ fragrance, whyItFits, score }, index) => (
                   <View key={fragrance.id} style={styles.resultCard}>
-                    <Image source={{ uri: fragrance.imageUrl }} style={styles.resultImage} resizeMode="contain" />
+                    <Image source={getFragranceImageSource(fragrance.id, fragrance.imageUrl)} style={styles.resultImage} resizeMode="contain" />
                     <View style={styles.resultBody}>
                       <View style={styles.resultTopline}>
                         <Text style={styles.resultRank}>Try {index + 1}</Text>
@@ -352,7 +353,7 @@ export default function App() {
                 <View style={styles.shelfGrid}>
                   {catalog.map((fragrance) => (
                     <View key={fragrance.id} style={styles.shelfCard}>
-                      <Image source={{ uri: fragrance.imageUrl }} style={styles.shelfImage} resizeMode="contain" />
+                      <Image source={getFragranceImageSource(fragrance.id, fragrance.imageUrl)} style={styles.shelfImage} resizeMode="contain" />
                       <Text style={styles.shelfBrand}>{fragrance.brand}</Text>
                       <Text style={styles.shelfName}>{fragrance.name}</Text>
                     </View>

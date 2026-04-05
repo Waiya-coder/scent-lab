@@ -8,7 +8,10 @@
     "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.winniebrendawaiya.scentlab"
+      "bundleIdentifier": "com.winniebrendawaiya.scentlab",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "assetBundlePatterns": [
       "**/*"
